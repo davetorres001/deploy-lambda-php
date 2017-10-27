@@ -1,0 +1,47 @@
+parameters:
+  logging_level: !php/const:Monolog\Logger::INFO
+
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    UnitiWeb\DeployLambdaPhp\:
+        resource: '../src/*'
+        exclude: '../src/Common/dbcFunctions.php'
+
+    lambda.container:
+        class: Unitiweb\DeployLambdaPhp\Common\ContainerHandler
+        arguments: ['@service_container', '%context%']
+
+    lambda.handler:
+        class: Unitiweb\DeployLambdaPhp\LambdaHandler
+        arguments: ['@lambda.container', '@logger']
+
+    lambda.client:
+        class: Aws\S3\S3Client
+        arguments: [{version: '%VERSION%', region: '%REGION%'}]
+
+    logger:
+        class: Monolog\Logger
+        arguments:
+            - 'handler'
+        calls:
+            - [pushHandler, ['@logging.handler']]
+
+    logging.formatter:
+        class: Monolog\Formatter\LineFormatter
+        public: false
+        arguments:
+            - '%%message%% %%context%% %%extra%%'
+
+    logging.handler:
+        class: Monolog\Handler\StreamHandler
+        public: false
+        arguments:
+            - 'php://stderr'
+            - '%logging_level%'
+        calls:
+            - [setFormatter, ['@logging.formatter']]

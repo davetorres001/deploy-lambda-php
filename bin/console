@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use UnitiWeb\DeployLambdaPhp\Command\DeployCompileCommand;
+use UnitiWeb\DeployLambdaPhp\Command\DeployExecuteCommand;
+use UnitiWeb\DeployLambdaPhp\Command\DeployInvokeCommand;
+use UnitiWeb\DeployLambdaPhp\Command\DeployLocalCommand;
+
+set_time_limit(0);
+
+$loader = require __DIR__.'/../vendor/autoload.php';
+
+$input = new ArgvInput;
+
+$application = new Application;
+
+/**
+ * Registered Commands
+ */
+$application->add(new DeployExecuteCommand);
+$application->add(new DeployInvokeCommand);
+$application->add(new DeployLocalCommand);
+$application->add(new DeployCompileCommand);
+
+$application->run($input);

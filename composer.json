@@ -1,0 +1,28 @@
+{
+    "name": "unitiweb/deploy-lambda-php",
+    "description": "Deploys a lambda function an AWS using php",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "UnitiWeb\\DeployLambdaPhp\\": "src",
+            "UnitiWeb\\DeployLambdaPhp\\Command\\": "bin/command"
+        },
+        "files": [
+            "src/Common/dbcFunctions.php"
+        ]
+    },
+    "require": {
+        "monolog/monolog": "^1.22",
+        "php": "^7.1",
+        "psr/log": "^1.0",
+        "symfony/config": "^3.2",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/yaml": "^3.2",
+        "aws/aws-sdk-php": "^3.36"
+    },
+    "require-dev": {
+        "symfony/console": "^3.3",
+        "symfony/process": "^3.3",
+        "symfony/event-dispatcher": "^3.3"
+    }
+}
